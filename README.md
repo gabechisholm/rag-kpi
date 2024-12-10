@@ -27,3 +27,50 @@ Use this measure for conditional formatting in Power BI visuals to display perfo
 ## Requirements
 Slicer: Options for comparison (e.g., "Previous Quarter Same Year", "Previous Year Same Quarter").
 Data Columns: Indicator, Client group, FisYear, Quarter, Value.
+
+
+
+# MEASURE_LatestDate
+## Overview
+FIN_LatestDate is a simple DAX measure in Power BI that identifies the most recent date (Date) in the kpi_data table.
+
+## Key Functionality
+### Purpose: 
+- Fetches the latest date from the Date column of the kpi_data table.
+### Use Case: 
+- Helps filter or display data associated with the most recent date, ensuring up-to-date insights.
+  
+## Usage
+Use this measure in visuals to display the latest date or as a filter for showing only the most recent data.
+Combine it with other measures for dynamic calculations based on the most recent data.
+## Requirements
+Data Column: Date column in the kpi_data table.
+
+
+
+# MEASURE_LatestValue
+## Overview
+FIN_LatestValue is a DAX measure in Power BI that retrieves the most recent value of a selected Key Performance Indicator (KPI) for a specified client group.
+
+## Key Features
+Dynamically identifies the latest fiscal year and latest quarter for the selected Indicator and Client group.
+Returns the maximum value of the KPI for the latest year and quarter.
+## How It Works
+1. Identify Selected Context:
+  - Indicator: Selected via slicer or context.
+  - Client group: Selected via slicer or context.
+2. Find Latest Period:
+  - Determines the latest fiscal year (FisYear) for the selected context.
+  - Identifies the most recent quarter within the latest fiscal year.
+3. Retrieve Latest Value:
+  - Extracts the maximum value (Value) for the determined latest year and quarter.
+## Usage
+- Visualisation: Display the most recent KPI value for specific indicators and client groups.
+- Calculation: Use as a base for further comparisons or trend analysis.
+## Requirements
+Data Columns:
+  - Indicator
+  - Client group
+  - FisYear
+  - Quarter
+  - Value
