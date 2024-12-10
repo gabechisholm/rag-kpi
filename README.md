@@ -8,11 +8,11 @@ Previous Quarter Same Year
 Previous Year Same Quarter
 
 #### Color Coding:
-Green (#77dd77): Improved
-Orange (#ffb347): Same
-Red (#ff6961): Worse
-Neon Blue (#00ffff): Data unavailable
-White (#ffffff): Default/no selection
+Green (#77dd77): Improved <br/>
+Orange (#ffb347): Same <br/>
+Red (#ff6961): Worse <br/>
+Neon Blue (#00ffff): Data unavailable <br/>
+White (#ffffff): Default/no selection <br/>
 Handles Missing Data: Provides fallback colors for missing comparison data.
 
 ## How It Works
