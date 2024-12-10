@@ -1,0 +1,26 @@
+FIN_Latest Value = 
+VAR SelectedIndicator = SELECTEDVALUE(kpi_data[Indicator])
+VAR SelectedClientGroup = SELECTEDVALUE(kpi_data[Client group])
+VAR LatestYear = MAXX(
+    FILTER(kpi_data,
+        kpi_data[Indicator] = SelectedIndicator &&
+        kpi_data[Client group] = SelectedClientGroup
+    ),
+    kpi_data[FisYear]
+)
+VAR LatestQuarter = MAXX(
+    FILTER(kpi_data,
+        kpi_data[Indicator] = SelectedIndicator &&
+        kpi_data[Client group] = SelectedClientGroup &&
+        kpi_data[FisYear] = LatestYear
+    ),
+    kpi_data[Quarter]
+)
+RETURN
+    CALCULATE(
+        MAX(kpi_data[Value]),
+        kpi_data[FisYear] = LatestYear &&
+        kpi_data[Quarter] = LatestQuarter &&
+        kpi_data[Indicator] = SelectedIndicator &&
+        kpi_data[Client group] = SelectedClientGroup
+    )

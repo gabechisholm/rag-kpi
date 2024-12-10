@@ -1,0 +1,8 @@
+ComparisonType = DATATABLE(
+    "ComparisonType", STRING,
+    {
+        {
+            "Previous Quarter Same Year"},
+            {"Previous Year Same Quarter"}
+    }
+)

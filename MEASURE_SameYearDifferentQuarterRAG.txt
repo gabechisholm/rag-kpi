@@ -1,0 +1,57 @@
+FIN_PreviousQuarterRAG = 
+VAR SelectedIndicator = SELECTEDVALUE(kpi_data[Indicator])
+VAR SelectedClientGroup = SELECTEDVALUE(kpi_data[Client group])
+
+// Get latest year and latest quarter
+VAR LatestYear = MAXX(
+    FILTER(kpi_data,
+        kpi_data[Indicator] = SelectedIndicator &&
+        kpi_data[Client group] = SelectedClientGroup
+    ),
+    kpi_data[FisYear]
+)
+
+VAR LatestQuarter = MAXX(
+    FILTER(kpi_data,
+        kpi_data[Indicator] = SelectedIndicator &&
+        kpi_data[Client group] = SelectedClientGroup &&
+        kpi_data[FisYear] = LatestYear
+    ),
+    kpi_data[Quarter]
+)
+
+// Find previous quarter and previous year
+VAR PrevQuarter = IF(LatestQuarter = 1, 4, LatestQuarter - 1)
+VAR PrevYear = IF(LatestQuarter = 1, LatestYear - 1, LatestYear)
+
+// Get the latest value for the current quarter
+VAR LatestValue = CALCULATE(
+    MAX(kpi_data[Value]),
+    kpi_data[FisYear] = LatestYear &&
+    kpi_data[Quarter] = LatestQuarter &&
+    kpi_data[Indicator] = SelectedIndicator &&
+    kpi_data[Client group] = SelectedClientGroup
+)
+
+// Get the value for the previous quarter
+VAR PreviousValue = CALCULATE(
+    MAX(kpi_data[Value]),
+    kpi_data[FisYear] = PrevYear &&
+    kpi_data[Quarter] = PrevQuarter &&
+    kpi_data[Indicator] = SelectedIndicator &&
+    kpi_data[Client group] = SelectedClientGroup
+)
+
+// Comparison result: 2 = improved (green), 1 = same (orange), 0 = worse (red)
+VAR ComparisonResult = 
+    IF(LatestValue > PreviousValue, 2, 
+    IF(LatestValue = PreviousValue, 1, 0))
+
+RETURN
+    SWITCH(
+        TRUE(),
+        ComparisonResult = 2, "#77dd77", // Green for improved
+        ComparisonResult = 1, "#ffb347", // Orange for same
+        ComparisonResult = 0, "#ff6961", // Red for worse
+        "#ffffff" // Default white if no comparison result
+    )

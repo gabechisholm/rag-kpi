@@ -1,0 +1,81 @@
+FIN_SlicerCompare = 
+// Fetch the selected comparison type from the slicer
+VAR ComparisonSelection = SELECTEDVALUE(ComparisonType[ComparisonType])
+
+// Fetch the selected indicator and client group
+VAR SelectedIndicator = SELECTEDVALUE(kpi_data[Indicator])
+VAR SelectedClientGroup = SELECTEDVALUE(kpi_data[Client group])
+
+// Latest year and quarter for the selected indicator and client group
+VAR LatestYear = MAXX(
+    FILTER(kpi_data,
+        kpi_data[Indicator] = SelectedIndicator &&
+        kpi_data[Client group] = SelectedClientGroup
+    ),
+    kpi_data[FisYear]
+)
+
+VAR LatestQuarter = MAXX(
+    FILTER(kpi_data,
+        kpi_data[Indicator] = SelectedIndicator &&
+        kpi_data[Client group] = SelectedClientGroup &&
+        kpi_data[FisYear] = LatestYear
+    ),
+    kpi_data[Quarter]
+)
+
+// Get latest value for selected indicator and client group
+VAR LatestValue = CALCULATE(
+    MAX(kpi_data[Value]),
+    kpi_data[FisYear] = LatestYear &&
+    kpi_data[Quarter] = LatestQuarter &&
+    kpi_data[Indicator] = SelectedIndicator &&
+    kpi_data[Client group] = SelectedClientGroup
+)
+
+// --- Previous Quarter Same Year ---
+// Find previous quarter and its year
+VAR PrevQuarter = IF(LatestQuarter = 1, 4, LatestQuarter - 1)
+VAR PrevYearForQuarter = IF(LatestQuarter = 1, LatestYear - 1, LatestYear)
+
+// Get value for previous quarter in the same year
+VAR PreviousQuarterValue = CALCULATE(
+    MAX(kpi_data[Value]),
+    kpi_data[FisYear] = PrevYearForQuarter &&
+    kpi_data[Quarter] = PrevQuarter &&
+    kpi_data[Indicator] = SelectedIndicator &&
+    kpi_data[Client group] = SelectedClientGroup
+)
+
+// --- Same Quarter Previous Year ---
+// Find the value for the same quarter in the previous year
+VAR PrevYearSameQuarter = LatestYear - 1
+VAR PreviousYearValue = CALCULATE(
+    MAX(kpi_data[Value]),
+    kpi_data[FisYear] = PrevYearSameQuarter &&
+    kpi_data[Quarter] = LatestQuarter &&
+    kpi_data[Indicator] = SelectedIndicator &&
+    kpi_data[Client group] = SelectedClientGroup
+)
+
+// --- Logic for switching between comparisons based on slicer selection ---
+RETURN
+    SWITCH(
+        TRUE(),
+        ComparisonSelection = "Previous Quarter Same Year", 
+            IF(LatestValue > PreviousQuarterValue, "#77dd77", // Green (improved)
+            IF(LatestValue = PreviousQuarterValue, "#ffb347", // Orange (same)
+            IF(NOT(ISBLANK(PreviousQuarterValue)), "#ff6961", // Red (worse)
+            "#00ffff" // Neon blue if previous quarter data is unavailable
+            ))),
+
+        ComparisonSelection = "Previous Year Same Quarter", 
+            IF(LatestValue > PreviousYearValue, "#77dd77", // Green (improved)
+            IF(LatestValue = PreviousYearValue, "#ffb347", // Orange (same)
+            IF(NOT(ISBLANK(PreviousYearValue)), "#ff6961", // Red (worse)
+            "#00ffff" // Neon blue if previous year data is unavailable
+            ))),
+
+        // Default case if no valid option is selected
+        "#ffffff" // Default background color (white)
+    )

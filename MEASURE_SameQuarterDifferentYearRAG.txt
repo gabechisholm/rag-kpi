@@ -1,0 +1,57 @@
+FIN_PreviousYearRAG = 
+// Fetch the selected indicator and client group
+VAR SelectedIndicator = SELECTEDVALUE(kpi_data[Indicator])
+VAR SelectedClientGroup = SELECTEDVALUE(kpi_data[Client group])
+
+// Get the latest year and quarter for the selected indicator and client group
+VAR LatestYear = MAXX(
+    FILTER(kpi_data,
+        kpi_data[Indicator] = SelectedIndicator &&
+        kpi_data[Client group] = SelectedClientGroup
+    ),
+    kpi_data[FisYear]
+)
+
+VAR LatestQuarter = MAXX(
+    FILTER(kpi_data,
+        kpi_data[Indicator] = SelectedIndicator &&
+        kpi_data[Client group] = SelectedClientGroup &&
+        kpi_data[FisYear] = LatestYear
+    ),
+    kpi_data[Quarter]
+)
+
+// Get the value for the latest year and quarter
+VAR LatestValue = CALCULATE(
+    MAX(kpi_data[Value]),
+    kpi_data[FisYear] = LatestYear &&
+    kpi_data[Quarter] = LatestQuarter &&
+    kpi_data[Indicator] = SelectedIndicator &&
+    kpi_data[Client group] = SelectedClientGroup
+)
+
+// Get the value for the same quarter in the previous year
+VAR PrevYear = LatestYear - 1
+VAR PreviousYearValue = CALCULATE(
+    MAX(kpi_data[Value]),
+    kpi_data[FisYear] = PrevYear &&
+    kpi_data[Quarter] = LatestQuarter &&
+    kpi_data[Indicator] = SelectedIndicator &&
+    kpi_data[Client group] = SelectedClientGroup
+)
+
+// RAG Logic for Same Quarter Previous Year comparison
+RETURN
+    IF(
+        ISBLANK(PreviousYearValue), 
+        "#00ffff", // Neon blue if the previous year's data is unavailable
+        IF(
+            LatestValue > PreviousYearValue, 
+            "#77dd77", // Green (improved)
+            IF(
+                LatestValue = PreviousYearValue, 
+                "#ffb347", // Orange (same)
+                "#ff6961" // Red (worse)
+            )
+        )
+    )
