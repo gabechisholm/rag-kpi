@@ -74,3 +74,38 @@ Data Columns:
 - FisYear
 - Quarter
 - Value
+
+
+
+# MEASURE_SameQuarterDifferentYearRAG
+## Overview
+FIN_PreviousYearRAG is a DAX measure in Power BI that compares the most recent value of a Key Performance Indicator (KPI) for a selected client group to its value in the same quarter of the previous year. The measure assigns a RAG (Red-Amber-Green) colour code to indicate performance trends.
+
+## Key Features
+1. Comparison:
+   - Compares the latest KPI value to the same quarter in the previous year.
+2. Color Coding:
+   - Green (#77dd77): Improved
+   - Orange (#ffb347): Same
+   - Red (#ff6961): Worse
+   -Neon Blue (#00ffff): Previous year's data unavailable.
+## How It Works
+1. Identify Context:
+   -Selected Indicator and Client group via slicers or context.
+2. Find Periods:
+   - Determines the latest year and quarter for the selected context.
+   - Identifies the same quarter in the previous year.
+3. Retrieve Values:
+   - Fetches KPI values for the latest period and the previous year’s same quarter.
+4. Apply RAG Logic:
+   - Compares values and assigns a colour code based on improvement, decline, or no change.
+## Usage
+- Conditional Formatting: Use in visuals to highlight performance trends with RAG colours.
+- Trend Analysis: Quickly identify year-on-year performance changes for selected KPIs.
+### Requirements
+- Data Columns:
+- Indicator
+- Client group
+- FisYear
+- Quarter
+- Value
