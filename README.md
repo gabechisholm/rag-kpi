@@ -1,3 +1,14 @@
+# Table of Contents
+- [MEASURE_CombinedRAG](#measure_combinedrag)
+- [MEASURE_LatestDate](#measure_latestdate)
+- [MEASURE_LatestValue](#measure_latestvalue)
+- [MEASURE_SameQuarterDifferentYearRAG](#measure_samequarterdifferentyearrag)
+- [MEASURE_PreviousQuarterRAG](#measure_previousquarterrag)
+- [Power Query Script for `kpi_data`](#power-query-script-for-kpi_data)
+- [ComparisonType Table](#comparisontype-table)
+
+---
+
 # MEASURE_CombinedRAG
 
 ## Overview
