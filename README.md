@@ -57,20 +57,20 @@ Dynamically identifies the latest fiscal year and latest quarter for the selecte
 Returns the maximum value of the KPI for the latest year and quarter.
 ## How It Works
 1. Identify Selected Context:
-  - Indicator: Selected via slicer or context.
-  - Client group: Selected via slicer or context.
+   - Indicator: Selected via slicer or context.
+   - Client group: Selected via slicer or context.
 2. Find Latest Period:
-  - Determines the latest fiscal year (FisYear) for the selected context.
-  - Identifies the most recent quarter within the latest fiscal year.
+   - Determines the latest fiscal year (FisYear) for the selected context.
+   - Identifies the most recent quarter within the latest fiscal year.
 3. Retrieve Latest Value:
-  - Extracts the maximum value (Value) for the determined latest year and quarter.
+   - Extracts the maximum value (Value) for the determined latest year and quarter.
 ## Usage
 - Visualisation: Display the most recent KPI value for specific indicators and client groups.
 - Calculation: Use as a base for further comparisons or trend analysis.
 ## Requirements
 Data Columns:
-  - Indicator
-  - Client group
-  - FisYear
-  - Quarter
-  - Value
+- Indicator
+- Client group
+- FisYear
+- Quarter
+- Value
