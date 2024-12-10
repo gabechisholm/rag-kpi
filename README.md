@@ -168,3 +168,88 @@ Use this measure for conditional formatting in Power BI visuals to display perfo
   - `FisYear`
   - `Quarter`
   - `Value`
+
+
+
+# Power Query Script for `kpi_data`
+
+## Overview
+This Power Query script processes a KPI dataset from an Excel file, transforming and preparing the data for analysis. The script extracts fiscal year and quarter information from a `Date` column and ensures proper data typing for downstream usage in Power BI.
+
+## Key Steps
+1. **Source Data**:
+   - Reads the data from an Excel file. Replace `"INSERT FILE PATH HERE"` with the actual file path.
+   - Promotes the first row to headers.
+
+2. **Data Type Transformation**:
+   - Converts columns to their appropriate types:
+     - `Indicator`: Text
+     - `Client group`: Text
+     - `Value`: Integer
+     - `Date`: Text
+
+3. **Extract Fiscal Year (`FisYear`)**:
+   - Adds a `FisYear` column by extracting the first 4 characters from the `Date` column (assumed to represent the year).
+
+4. **Extract Quarter (`Quarter`)**:
+   - Adds a `Quarter` column by extracting the last character from the `Date` column (assumed to represent the quarter).
+
+5. **Rename and Finalise**:
+   - Renames the `Custom` column to `FisYear`.
+   - Ensures correct data types for `FisYear` and `Quarter`.
+
+## Requirements
+- **Input Data**:
+  - An Excel file with a sheet named `Sheet1`.
+  - Columns:
+    - `Indicator`: KPI name
+    - `Client group`: Group being measured
+    - `Value`: Numeric value of the KPI
+    - `Date`: A string in `YYYYQ` format (e.g., `2023Q1`).
+
+- **Output Data**:
+  - Adds two new columns:
+    - `FisYear`: Extracted fiscal year as an integer.
+    - `Quarter`: Extracted quarter as an integer.
+
+## Usage
+1. Replace `"INSERT FILE PATH HERE"` with the full file path to your Excel dataset.
+2. Load the script into Power Query in Power BI or Excel.
+3. Ensure the input data matches the required format (e.g., `Date` column with `YYYYQ` values).
+4. Use the transformed dataset for further analysis, including visualisation or KPI calculations.
+
+---
+
+### Notes
+- Ensure the `Date` column is in `YYYYQ` format before using this script.
+- Modify column names or data types in the script if your dataset's structure is different.
+
+
+
+# ComparisonType Table
+
+## Overview
+The `ComparisonType` table is a static DAX-created table in Power BI. It defines the options available for selecting a comparison type when analysing Key Performance Indicators (KPIs).
+
+## Structure
+- **Column**: `ComparisonType` (string)
+- **Values**:
+  1. `Previous Quarter Same Year`: Compares the latest quarter's KPI value to the previous quarter within the same year.
+  2. `Previous Year Same Quarter`: Compares the latest quarter's KPI value to the same quarter in the previous year.
+
+## Usage
+- Use this table as a slicer in your Power BI reports to allow users to select the desired comparison type.
+- The selection drives dynamic measures (e.g., `FIN_SlicerCompare`) to calculate and display performance trends based on the chosen comparison type.
+
+## Code
+The table is created using the following DAX code:
+
+```DAX
+ComparisonType = DATATABLE(
+    "ComparisonType", STRING,
+    {
+        {"Previous Quarter Same Year"},
+        {"Previous Year Same Quarter"}
+    }
+)
+
