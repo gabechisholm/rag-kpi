@@ -109,3 +109,49 @@ FIN_PreviousYearRAG is a DAX measure in Power BI that compares the most recent v
 - FisYear
 - Quarter
 - Value
+
+
+
+
+# FIN_PreviousQuarterRAG Measure: README
+
+## Overview
+`FIN_PreviousQuarterRAG` is a DAX measure in Power BI that compares the latest value of a Key Performance Indicator (KPI) to its value in the previous quarter. It assigns a RAG (Red-Amber-Green) colour code to indicate performance trends over the most recent quarter.
+
+## Key Features
+1. **Comparison**:
+   - Evaluates the KPI value in the latest quarter against the previous quarter.
+   - Adjusts for fiscal year changes if the latest quarter is Q1.
+
+2. **Color Coding**:
+   - **Green** (`#77dd77`): Improved  
+   - **Orange** (`#ffb347`): Same  
+   - **Red** (`#ff6961`): Worse  
+   - **White** (`#ffffff`): Default if comparison cannot be determined.
+
+## How It Works
+1. **Identify Context**:
+   - Selected `Indicator` and `Client group` via slicers or context.
+2. **Find Periods**:
+   - Determines the **latest year and quarter** for the selected context.
+   - Identifies the **previous quarter** and adjusts the year if necessary (e.g., Q1 to Q4 of the previous year).
+3. **Retrieve Values**:
+   - Fetches KPI values for the latest quarter and the previous quarter.
+4. **Apply RAG Logic**:
+   - Compares values and assigns a colour code based on improvement, decline, or no change.
+
+## Usage
+- **Conditional Formatting**: Use in visuals to highlight performance trends with RAG colours.
+- **Trend Monitoring**: Quickly assess quarter-on-quarter performance changes for selected KPIs.
+
+---
+
+### Requirements
+- **Data Columns**:
+  - `Indicator`
+  - `Client group`
+  - `FisYear`
+  - `Quarter`
+  - `Value`
+
+This measure provides stakeholders with clear insights into short-term KPI performance trends for effective decision-making.
