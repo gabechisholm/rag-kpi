@@ -1,3 +1,15 @@
+# Repository Overview
+
+This repository contains Power BI resources and scripts designed for analysing and visualising Key Performance Indicators (KPIs). It includes:
+
+- **DAX Measures**: Predefined calculations for KPI analysis (e.g., quarter-to-quarter and year-to-year comparisons with RAG coding).
+- **Power Query Script**: Automates data transformation, including extracting fiscal years and quarters.
+- **Static Table**: Facilitates user-driven comparison types in reports.
+
+These tools enable efficient trend analysis and interactive reporting for stakeholders, simplifying KPI analysis and enhancing Power BI dashboards.
+
+---
+
 # Table of Contents
 - [MEASURE_CombinedRAG](#measure_combinedrag)
 - [MEASURE_LatestDate](#measure_latestdate)
